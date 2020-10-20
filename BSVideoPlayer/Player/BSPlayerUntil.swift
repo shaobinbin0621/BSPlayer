@@ -18,16 +18,16 @@ var xSeriesEdgeMaxValue: CGFloat {
 	return max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, UIApplication.shared.keyWindow!.safeAreaInsets.top)
 }
 
-class VExpandButton: UIButton {
-	override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+public class VExpandButton: UIButton {
+	public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 		let space: CGFloat = 10.0
 		let rect = CGRect.init(x: -space, y: -space, width: width+space*2, height: height+space*2)
 		return rect.contains(point)
 	}
 }
 
-class VSlider: UISlider {
-	override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+public class VSlider: UISlider {
+	public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 		let space: CGFloat = 10.0
 		let rect = CGRect.init(x: -space, y: -space, width: width+space*2, height: height+space*2)
 		return rect.contains(point)

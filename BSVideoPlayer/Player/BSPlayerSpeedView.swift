@@ -8,13 +8,13 @@
 import Foundation
 import UIKit
 
-struct SpeedViewModel {
+public struct SpeedViewModel {
 	var desc: String
 	var speed: Float
 	var isSelected: Bool
 }
 
-class BSPlayerSpeedView: UIView, UITableViewDelegate, UITableViewDataSource {
+public class BSPlayerSpeedView: UIView, UITableViewDelegate, UITableViewDataSource {
 	
 	private var tableView: UITableView
 	private var datas: [SpeedViewModel]
@@ -24,7 +24,6 @@ class BSPlayerSpeedView: UIView, UITableViewDelegate, UITableViewDataSource {
 	init(frame: CGRect, datas: [SpeedViewModel]) {
 		var w = frame.width - 10
 		if #available(iOS 11.0, *) {
-//			w = w - xSeriesEdgeMaxValue
 			w = w - (UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.landscapeLeft ? UIApplication.shared.keyWindow!.safeAreaInsets.right : UIApplication.shared.keyWindow!.safeAreaInsets.left)
 		}
 		tableView = UITableView.init(frame: CGRect.init(x: 5, y: 10, width: w, height: frame.height - 20), style: .plain)
@@ -71,17 +70,17 @@ class BSPlayerSpeedView: UIView, UITableViewDelegate, UITableViewDataSource {
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return datas.count
 	}
 	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "BSPlayerSpeedCell") as! BSPlayerSpeedCell
 		cell.model = datas[indexPath.row]
 		return cell
 	}
 	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		var i = 0
 		while i < datas.count {
 			datas[i].isSelected = false

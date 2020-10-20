@@ -115,6 +115,10 @@ class V: UIViewController {
 		}
 		vPlayer = BSVideoPlayer.init(url: url, frame: CGRect.init(x: 0, y: y, width: view.frame.width, height: (9.0/16.0)*view.frame.width), config: BSVideoPlayerConfig.init(url: url))
 		view.addSubview(vPlayer)
+		
+		var p = BSPlayer.init(url: "", delegate: nil)
+//		let a = p.urlAsset
+//		p.urlAsset = nil
 	}
 	
 	deinit {

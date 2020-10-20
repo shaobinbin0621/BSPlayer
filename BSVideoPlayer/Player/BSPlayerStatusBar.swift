@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class BSPlayerBattery: UIView {
+public class BSPlayerBattery: UIView {
 	
 	var value: Float = 0 {
 		didSet {
@@ -38,7 +38,7 @@ class BSPlayerBattery: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		var x: CGFloat = 0
 		var y: CGFloat = 0
@@ -56,7 +56,7 @@ class BSPlayerBattery: UIView {
 	
 }
 
-class BSPlayerStatusBar: UIView {
+public class BSPlayerStatusBar: UIView {
 	
 	enum NetWorkType: String {
 		case unknow = "无网络"
@@ -140,7 +140,7 @@ class BSPlayerStatusBar: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		var w: CGFloat = (timeLabel.text?.getTextWidth(font: timeLabel.font, h: 20))! + 5
 		var x: CGFloat = width/2 - w/2

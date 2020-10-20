@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class BSPlayerControlBar: UIView {
+public class BSPlayerControlBar: UIView {
 	
 	private var progressView: UIProgressView
 	private var slider: VSlider
@@ -135,7 +135,7 @@ class BSPlayerControlBar: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		if isPortrait {
 			setPortrait()

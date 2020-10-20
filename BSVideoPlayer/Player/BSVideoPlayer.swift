@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-protocol BSVideoPlayerDelegate: AnyObject {
+public protocol BSVideoPlayerDelegate: AnyObject {
 	func playerViewClickBack(playerView: BSVideoPlayer)
 	func playerView(playerView: BSVideoPlayer, shouldRotateTo orientation: UIInterfaceOrientation)
 	func playerView(playerView: BSVideoPlayer, didRotateTo orienttation: UIInterfaceOrientation)
@@ -20,27 +20,20 @@ protocol BSVideoPlayerDelegate: AnyObject {
 	func playerView(playerView: BSVideoPlayer, controllViewDidFade state: Int)
 }
 
-struct BSVideoPlayerConfig {
+public struct BSVideoPlayerConfig {
 	
-	let url: String
+	public let url: String
 	
 	// 是否自动播放
-	let shouldAutoPlay: Bool
+	public let shouldAutoPlay: Bool
 	
 	//x系列手机(刘海屏)，在全屏状态下是否全填充屏幕
-	let isXSeriesAspectFill: Bool
+	public let isXSeriesAspectFill: Bool
 	
 	// 非刘海屏手机播放器的frame没有给statusBar预留间隙时，设置该值为true，可以使子view在竖屏时自动向下便宜
-	let isAvoidTheStatusBar: Bool
+	public let isAvoidTheStatusBar: Bool
 	
-	// 状态栏的隐藏和消失不使用 [setStatusBarHidden] 管理，而是使用控制器的 [prefersStatusBarHidden] 方法进行管理
-	// 若使用 [setStatusBarHidden] 将Info.plist文件里的 View controller-based status bar appearance 属性设置为NO
-//	let isStatusBarHiddenByVc: Bool
-	
-	//视频的填充模式
-//	let videoGravity: AVLayerVideoGravity
-	
-	init(url: String, shouldAutoPlay: Bool = true, isXSeriesAspectFill: Bool = false, isAvoidTheStatusBar: Bool = true) {
+	public init(url: String, shouldAutoPlay: Bool = true, isXSeriesAspectFill: Bool = false, isAvoidTheStatusBar: Bool = true) {
 		self.url = url
 		self.shouldAutoPlay = shouldAutoPlay
 		self.isXSeriesAspectFill = isXSeriesAspectFill
@@ -53,16 +46,16 @@ struct BSVideoPlayerConfig {
 	}
 }
 
-class PlayerView: UIView {
-	override class var layerClass: AnyClass {
+open class PlayerView: UIView {
+	public override class var layerClass: AnyClass {
 		return AVPlayerLayer.self
 	}
 	
-	var playerLayer: AVPlayerLayer {
+	public var playerLayer: AVPlayerLayer {
 		return layer as! AVPlayerLayer
 	}
 
-	var vPlayer: AVPlayer? {
+	public var vPlayer: AVPlayer? {
 		get {
 			return self.playerLayer.player
 		}
@@ -71,7 +64,7 @@ class PlayerView: UIView {
 		}
 	}
 	
-	override var contentMode: UIView.ContentMode {
+	public override var contentMode: UIView.ContentMode {
 		didSet {
 			switch contentMode {
 			case .scaleToFill:
@@ -90,25 +83,24 @@ class PlayerView: UIView {
 		return self.playerLayer.isReadyForDisplay
 	}
 	
-	override init(frame: CGRect) {
+	public override init(frame: CGRect) {
 		super.init(frame: frame)
 		contentMode = .scaleAspectFit
 	}
 	
-	required init?(coder: NSCoder) {
+	public required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		contentMode = .scaleAspectFit
-//		fatalError("init(coder:) has not been implemented")
 	}
 }
 
-class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
+public class BSVideoPlayer: PlayerView, UIGestureRecognizerDelegate {
 	
-	weak var delegate: BSVideoPlayerDelegate?
+	public weak var delegate: BSVideoPlayerDelegate?
 	
-	private(set) var isLockScreen = false
+	public private(set) var isLockScreen = false
 	
-	private(set) var isPortrait = true {
+	public private(set) var isPortrait = true {
 		didSet {
 			lockBtn.isHidden = isPortrait
 			backBtn.isHidden = !isPortrait
@@ -121,23 +113,23 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 		}
 	}
 	
-	private(set) var url: String
+	public private(set) var url: String
 	
-	private(set) var controlBar: BSPlayerControlBar
+	public private(set) var controlBar: BSPlayerControlBar
 	
-	private(set) var topView: BSPlayerTopView
+	public private(set) var topView: BSPlayerTopView
 	
-	private(set) var stepView: BSPlayerStepView
+	public private(set) var stepView: BSPlayerStepView
 	
-	private(set) var player: BSPlayer!
+	public private(set) var player: BSPlayer!
 	
-	private(set) var statusBar: BSPlayerStatusBar
+	public private(set) var statusBar: BSPlayerStatusBar
 	
-	private(set) var lockBtn: VExpandButton
+	public private(set) var lockBtn: VExpandButton
 	
-	private(set) var backBtn: VExpandButton
+	public private(set) var backBtn: VExpandButton
 	
-	private(set) var speedView: BSPlayerSpeedView?
+	public private(set) var speedView: BSPlayerSpeedView?
 	
 	private var portraitInfo: PortraitStateInfo?
 	
@@ -155,13 +147,11 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 	
 	private var panStartP = CGPoint.zero
 	
-//	private var orientation: UIInterfaceOrientation = UIInterfaceOrientation.portrait
-	
 	private(set) var config: BSVideoPlayerConfig
 	
 	private(set) var lastOrientation: UIInterfaceOrientation
 
-	init(url: String, frame: CGRect, config: BSVideoPlayerConfig) {
+	public init(url: String, frame: CGRect, config: BSVideoPlayerConfig) {
 		self.url = url
 		self.config = config
 		controlBar = BSPlayerControlBar.init(frame: CGRect.init(x: 0, y: frame.height - 45, width: frame.width, height: 45))
@@ -177,12 +167,12 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 
 		backgroundColor = UIColor.black
 		
-		player = BSPlayer.init(url: url, delegate: self, config: BSPlayerConfig.init(shouldAutoPlay: config.shouldAutoPlay))
+		player = BSPlayer.init(url: url, delegate: self)
 		vPlayer = player.player
 		
 		addSubview(controlBar)
 		controlBar.sliderValueChangedBl = { [unowned self] (value) in
-			self.playerCurrentTimeChanged(player: self.player, time: Int(value*Float(self.player.duration)))
+			self.player(player: self.player, currentTimeChanged: Int(value*Float(self.player.duration)))
 		}
 		controlBar.sliderTouchBeganBl = { [unowned self] (value) in
 			self.player.pause()
@@ -283,8 +273,7 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		let w = max(width, height)
 		let h = min(width, height)
@@ -297,11 +286,214 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 		backBtn.layer.cornerRadius = 25.0/2
 	}
 	
-	func shutdown() {
+	
+	public func shutdown() {
 		player.shutdown()
 	}
 	
 	//MARK: - Ation
+//	@objc private func tap() {
+//		if isLockScreen {
+//			self.lockBtn.alpha = 1
+//			return
+//		}
+//		if speedView != nil && !speedView!.isHidden {
+//			speedView?.dismiss()
+//			return
+//		}
+//		if isSubViewShouldHide {
+//			controllViewAutoFadeIn()
+//			delayControllViewFadeOut()
+//		}
+//		else {
+//			controllViewAutoFadeOut()
+//		}
+//	}
+//
+//	@objc private func pan() {
+//		if isLockScreen {
+//			self.lockBtn.alpha = 1
+//			return
+//		}
+//		if player.state != .playing && player.state != .paused {
+//			return
+//		}
+//		//默认从最左变滑到最右边为三分钟
+//		if panGes.state == .began {
+//			panStartP = panGes.location(in: self)
+//			stepView.isHidden = false
+//			player.pause()
+//		}
+//		else if panGes.state == .changed {
+//			let currentP = panGes.location(in: self)
+//			let x = currentP.x - panStartP.x
+//			let panTime = Int((x/width)*3*60)
+//			var seekTime = player.currentTime + panTime < 0 ? 0 : player.currentTime + panTime
+//			seekTime = seekTime > player.duration ? player.duration : seekTime
+//			stepView.currentTime = seekTime
+//			stepView.value = Float(seekTime)/Float(player.duration)
+//		}
+//		else if panGes.state == .ended {
+//			stepView.isHidden = true
+//			let currentP = panGes.location(in: self)
+//			let x = currentP.x - panStartP.x
+//			let panTime = Int((x/width)*3*60)
+//			var seekTime = player.currentTime + panTime < 0 ? 0 : player.currentTime + panTime
+//			seekTime = seekTime > player.duration ? player.duration : seekTime
+//			player.seekToTime(seekTime: seekTime)
+//		}
+//		else if panGes.state == .cancelled {
+//			stepView.isHidden = true
+//		}
+//	}
+//
+//	@objc private func doubleTap() {
+//		if isLockScreen {
+//			self.lockBtn.alpha = 1
+//			return
+//		}
+//		if player.isPlaying {
+//			player.pause()
+//		}
+//		else {
+//			player.play()
+//		}
+//	}
+//
+//	@objc private func clickLock() {
+//		if lockBtn.isSelected {
+//			// 解锁
+//			isLockScreen = false
+//			controllViewAutoFadeIn()
+//		}
+//		else {
+//			// 锁
+//			isLockScreen = true
+//			controllViewAutoFadeOut()
+//		}
+//		lockBtn.isSelected = !lockBtn.isSelected
+//	}
+//
+//	@objc private func clickBack() {
+//		delegate?.playerViewClickBack(playerView: self)
+//	}
+//
+//	//MARK: - UIGestureRecognizerDelegate
+//	override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//		if speedView != nil && !speedView!.isHidden {
+//			let p = gestureRecognizer.location(in: gestureRecognizer.view)
+//			let flag = speedView!.frame.contains(p)
+//			return !flag
+//		}
+//		return true
+//	}
+//
+////	//MARK: - VideoPlayeDelegate
+////	func player(player: BSPlayer, currentTimeChanged time: Int) {
+////		controlBar.curremTime = time
+////		controlBar.playProgress = Float(time)/Float(player.duration)
+////	}
+////
+////	func player(player: BSPlayer, stateChanged state: BSPlayer.State) {
+////		PlayerLoger.info(log: "state changed = \(state)")
+////		switch state {
+////		case .unknow:
+////			break
+////		case .prepareToPlay:
+////			break
+////		case .buffing:
+////			break
+////		case .readyToPlay:
+////			break
+////		case .paused:
+////			controlBar.isPlaying = false
+////			break
+////		case .playing:
+////			controlBar.isPlaying = true
+////			break
+////		case .seeking:
+////			break
+////		case .stoped:
+////			break
+////		case .playToEnd:
+////			controlBar.isPlaying = false
+////			break
+////		case .failed:
+////			break
+////		}
+////	}
+////
+////	func player(player: BSPlayer, durationChanged duration: Int) {
+////		controlBar.duration = duration
+////		stepView.duration = duration
+////	}
+////
+////	func player(player: BSPlayer, bufferTimeChanged buffringTime: Int) {
+////		let progress = Float(buffringTime)/Float(player.duration)
+////		controlBar.bufferProgress = progress
+////	}
+////
+////	func player(player: BSPlayer, unexceptedErrorOccur error: Error) {
+////		PlayerLoger.error(log: error.localizedDescription)
+////	}
+//
+//
+//	//MARK: - Private
+//
+//	//隐藏控制view
+//	private func delayControllViewFadeOut() {
+//		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(controllViewAutoFadeOut), object: nil)
+//		perform(#selector(controllViewAutoFadeOut), with: nil, afterDelay: 5)
+//	}
+//
+//	//显示控制view
+//	private func delayControllViewFadeIn() {
+//		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(controllViewAutoFadeIn), object: nil)
+//		perform(#selector(controllViewAutoFadeIn), with: nil, afterDelay: 5)
+//	}
+//
+//	@objc private func controllViewAutoFadeOut() {
+//		isSubViewShouldHide = true
+//		delegate?.playerView(playerView: self, controllViewWillFade: 0)
+//		UIView.animate(withDuration: 0.25) {
+//			self.controlBar.alpha = 0
+//			self.lockBtn.alpha = 0
+//			if !self.isPortrait {
+//				self.topView.alpha = 0
+//				self.statusBar.alpha = 0
+//				self.statusBar.stopMonitor()
+//			}
+//		} completion: { (flag) in
+//			self.delegate?.playerView(playerView: self, controllViewDidFade: 0)
+//		}
+//	}
+//
+//	@objc private func controllViewAutoFadeIn() {
+//		isSubViewShouldHide = false
+//		delegate?.playerView(playerView: self, controllViewWillFade: 1)
+//		UIView.animate(withDuration: 0.25) {
+//			self.controlBar.alpha = 1.0
+//			self.lockBtn.alpha = 1.0
+//			if !self.isPortrait {
+//				self.topView.alpha = 1.0
+//				self.statusBar.alpha = 1.0
+//				self.statusBar.startMonitor()
+//			}
+//		} completion: { (flag) in
+//			self.delegate?.playerView(playerView: self, controllViewDidFade: 0)
+//		}
+//	}
+	
+//	private func getStatusBarAppearanceState() -> Bool {
+//		let path = Bundle.main.path(forResource: "Info", ofType: "plist")!
+//		let dic = NSDictionary.init(contentsOf: URL.init(fileURLWithPath: path))
+//		let flag = dic!["UIViewControllerBasedStatusBarAppearance"]
+//		return flag! as! Bool
+//	}
+}
+
+// 手势交互
+extension BSVideoPlayer {
 	@objc private func tap() {
 		if isLockScreen {
 			self.lockBtn.alpha = 1
@@ -385,11 +577,11 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 	}
 	
 	@objc private func clickBack() {
-		
+		delegate?.playerViewClickBack(playerView: self)
 	}
 	
 	//MARK: - UIGestureRecognizerDelegate
-	override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+	public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
 		if speedView != nil && !speedView!.isHidden {
 			let p = gestureRecognizer.location(in: gestureRecognizer.view)
 			let flag = speedView!.frame.contains(p)
@@ -398,54 +590,55 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 		return true
 	}
 	
-	//MARK: - VideoPlayeDelegate
-	func playerCurrentTimeChanged(player: BSPlayer, time: Int) {
-		controlBar.curremTime = time
-		controlBar.playProgress = Float(time)/Float(player.duration)
-	}
-	
-	func playerBufferChanged(player: BSPlayer, buffringTime: Int) {
-		let progress = Float(buffringTime)/Float(player.duration)
-		controlBar.bufferProgress = progress
-	}
-	
-	func playerStateChanged(player: BSPlayer, state: BSPlayer.State) {
-		PlayerLoger.info(log: "state changed = \(state)")
-		switch state {
-		case .unknow:
-			break
-		case .prepareToPlay:
-			break
-		case .buffing:
-			break
-		case .readyToPlay:
-			break
-		case .paused:
-			controlBar.isPlaying = false
-			break
-		case .playing:
-			controlBar.isPlaying = true
-			break
-		case .seeking:
-			break
-		case .stoped:
-			break
-		case .playToEnd:
-			controlBar.isPlaying = false
-			break
-		case .failed:
-			break
-		}
-	}
-	
-	func playerDurationChanged(player: BSPlayer, duration: Int) {
-		controlBar.duration = duration
-		stepView.duration = duration
-	}
-	
-	func unexceptedErrorOccur(player: BSPlayer, error: Error) {
-		PlayerLoger.error(log: error.localizedDescription)
-	}
+//	//MARK: - VideoPlayeDelegate
+//	func player(player: BSPlayer, currentTimeChanged time: Int) {
+//		controlBar.curremTime = time
+//		controlBar.playProgress = Float(time)/Float(player.duration)
+//	}
+//
+//	func player(player: BSPlayer, stateChanged state: BSPlayer.State) {
+//		PlayerLoger.info(log: "state changed = \(state)")
+//		switch state {
+//		case .unknow:
+//			break
+//		case .prepareToPlay:
+//			break
+//		case .buffing:
+//			break
+//		case .readyToPlay:
+//			break
+//		case .paused:
+//			controlBar.isPlaying = false
+//			break
+//		case .playing:
+//			controlBar.isPlaying = true
+//			break
+//		case .seeking:
+//			break
+//		case .stoped:
+//			break
+//		case .playToEnd:
+//			controlBar.isPlaying = false
+//			break
+//		case .failed:
+//			break
+//		}
+//	}
+//
+//	func player(player: BSPlayer, durationChanged duration: Int) {
+//		controlBar.duration = duration
+//		stepView.duration = duration
+//	}
+//
+//	func player(player: BSPlayer, bufferTimeChanged buffringTime: Int) {
+//		let progress = Float(buffringTime)/Float(player.duration)
+//		controlBar.bufferProgress = progress
+//	}
+//
+//	func player(player: BSPlayer, unexceptedErrorOccur error: Error) {
+//		PlayerLoger.error(log: error.localizedDescription)
+//	}
+
 	
 	//MARK: - Private
 	
@@ -492,43 +685,87 @@ class BSVideoPlayer: PlayerView, BSPlayerDelegate, UIGestureRecognizerDelegate {
 			self.delegate?.playerView(playerView: self, controllViewDidFade: 0)
 		}
 	}
-	
-//	private func getStatusBarAppearanceState() -> Bool {
-//		let path = Bundle.main.path(forResource: "Info", ofType: "plist")!
-//		let dic = NSDictionary.init(contentsOf: URL.init(fileURLWithPath: path))
-//		let flag = dic!["UIViewControllerBasedStatusBarAppearance"]
-//		return flag! as! Bool
-//	}
 }
 
-// roatete
+//MARK:-BSPlayerDelegate
+extension BSVideoPlayer: BSPlayerDelegate {
+	public func player(player: BSPlayer, currentTimeChanged time: Int) {
+		controlBar.curremTime = time
+		controlBar.playProgress = Float(time)/Float(player.duration)
+	}
+	
+	public func player(player: BSPlayer, stateChanged state: BSPlayer.State) {
+		PlayerLoger.info(log: "state changed = \(state)")
+		switch state {
+		case .unknow:
+			break
+		case .prepareToPlay:
+			break
+		case .buffing:
+			break
+		case .readyToPlay:
+			break
+		case .paused:
+			controlBar.isPlaying = false
+			break
+		case .playing:
+			controlBar.isPlaying = true
+			break
+		case .seeking:
+			break
+		case .stoped:
+			break
+		case .playToEnd:
+			controlBar.isPlaying = false
+			break
+		case .failed:
+			break
+		}
+	}
+	
+	public func player(player: BSPlayer, durationChanged duration: Int) {
+		controlBar.duration = duration
+		stepView.duration = duration
+	}
+	
+	public func player(player: BSPlayer, bufferTimeChanged buffringTime: Int) {
+		let progress = Float(buffringTime)/Float(player.duration)
+		controlBar.bufferProgress = progress
+	}
+	
+	public func player(player: BSPlayer, unexceptedErrorOccur error: Error) {
+		PlayerLoger.error(log: error.localizedDescription)
+	}
+}
+
+// Rotate
 extension BSVideoPlayer {
 	// 旋转至竖屏
 	private func setPortrait() {
-		//初始化之后会触发一次方向为portrait旋转
 		guard self.portraitInfo != nil else {
 			return
 		}
 		rotateToOrientation(orientation: UIInterfaceOrientation.portrait)
 	}
 	
-	//旋转至全屏
+	// 旋转至全屏
 	// 默认的旋转反向是听筒在左侧
 	private func setFullScreen(ori: UIInterfaceOrientation = UIInterfaceOrientation.landscapeRight) {
 		rotateToOrientation(orientation: UIInterfaceOrientation.landscapeRight)
 	}
 	
-	var shouldAutorotate: Bool {
+	public var shouldAutorotate: Bool {
 		return !isLockScreen
 	}
 	
-	func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+	public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		let interfaceOrientation = UIDevice.current.toInterfaceOrientation()
-		print("device \(interfaceOrientation.rawValue), status \(UIApplication.shared.statusBarOrientation.rawValue)")
 		if lastOrientation == interfaceOrientation {
 			return
 		}
 		isPortrait = interfaceOrientation == UIInterfaceOrientation.portrait
+		
+		// 设置自定义的状态栏
 		if interfaceOrientation == UIInterfaceOrientation.portrait {
 			// 竖屏状态下停止监控 关闭timer
 			statusBar.isHidden = true
@@ -539,7 +776,6 @@ extension BSVideoPlayer {
 			if !isSubViewShouldHide {
 				statusBar.alpha = 1
 			}
-			
 			statusBar.startMonitor()
 		}
 		
@@ -604,9 +840,4 @@ struct PortraitStateInfo {
 	var level: Int
 	var rect: CGRect
 	var sView: UIView
-	init(level: Int, rect: CGRect, sView: UIView) {
-		self.level = level
-		self.rect = rect
-		self.sView = sView
-	}
 }

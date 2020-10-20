@@ -9,35 +9,27 @@ import Foundation
 import AVFoundation
 import UIKit
 
-protocol BSPlayerDelegate: AnyObject {
-	func playerCurrentTimeChanged(player: BSPlayer, time: Int)
-	func playerStateChanged(player: BSPlayer, state: BSPlayer.State)
-	func	playerDurationChanged(player: BSPlayer, duration: Int)
-	func playerBufferChanged(player: BSPlayer, buffringTime: Int)
-	func unexceptedErrorOccur(player: BSPlayer, error: Error)
+public protocol BSPlayerDelegate: AnyObject {
+	func player(player: BSPlayer, currentTimeChanged time: Int)
+	func player(player: BSPlayer, stateChanged state: BSPlayer.State)
+	func	player(player: BSPlayer, durationChanged duration: Int)
+	func player(player: BSPlayer, bufferTimeChanged buffringTime: Int)
+	func player(player: BSPlayer, unexceptedErrorOccur error: Error)
 }
 
-struct BSPlayerConfig {
-	var shouldAutoPlay: Bool
-	init(shouldAutoPlay: Bool = true) {
-		self.shouldAutoPlay = shouldAutoPlay
-	}
-}
-
-class BSPlayer: NSObject {
+public class BSPlayer: NSObject {
 	
-	private(set) var urlAsset: AVURLAsset?
-	private(set) var player: AVPlayer?
-	private(set) var playerItem: AVPlayerItem?
-	var seekToPlaybackTime = 0
+	public private(set) var urlAsset: AVURLAsset?
+	public private(set) var player: AVPlayer?
+	public private(set) var playerItem: AVPlayerItem?
 	
-	var isPlaying: Bool {
+	public var isPlaying: Bool {
 		get {
 			return state == .playing
 		}
 	}
 	
-	var duration: Int {
+	public var duration: Int {
 		get {
 			if playerItem == nil {
 				return 0
@@ -46,7 +38,7 @@ class BSPlayer: NSObject {
 		}
 	}
 	
-	var currentTime: Int {
+	public var currentTime: Int {
 		get {
 			if player == nil {
 				return 0
@@ -55,7 +47,7 @@ class BSPlayer: NSObject {
 		}
 	}
 	
-	var mute: Bool {
+	public var mute: Bool {
 		get {
 			if player == nil {
 				return false
@@ -69,9 +61,9 @@ class BSPlayer: NSObject {
 		}
 	}
 	
-	var isLocal: Bool {
+	public var isLocal: Bool {
 		get {
-			return url.hasPrefix("file:")
+			return url.hasPrefix("file://")
 		}
 	}
 	
@@ -86,11 +78,8 @@ class BSPlayer: NSObject {
 		}
 	}
 	
-	private var playerItemReady: Bool {
-		return playerItem?.status == AVPlayerItem.Status.readyToPlay
-	}
-	
-	var rate: Float {
+	// 设置播放速度
+	public var rate: Float {
 		get {
 			if player == nil {
 				return 0
@@ -101,13 +90,17 @@ class BSPlayer: NSObject {
 			player?.rate = newValue
 		}
 	}
-
-	private var playerTimeObserver: Any?
 	
-	private(set) var url: String!
-	weak private(set) var delegate: BSPlayerDelegate?
+	public private(set) var shouldAutoPlay: Bool
 	
-	enum State: Int {
+	// 播放初始的播放时间
+	public private(set) var playbackStartTime = 0
+	
+	public private(set) var url: String!
+	
+	weak public private(set) var delegate: BSPlayerDelegate?
+	
+	public enum State: Int {
 		case unknow
 		case prepareToPlay
 		case buffing
@@ -120,15 +113,17 @@ class BSPlayer: NSObject {
 		case failed
 	}
 	
-	private(set) var state: State = .unknow {
+	public private(set) var state: State = .unknow {
 		didSet {
-			delegate?.playerStateChanged(player: self, state: state)
+			delegate?.player(player: self, stateChanged: state)
 		}
 	}
+
+	private var playerTimeObserver: Any?
 	
-	var loadAssetDidCompleted: ((_ error: NSError?) -> Void)?
-	
-	private(set) var config: BSPlayerConfig
+	private var playerItemReady: Bool {
+		return playerItem?.status == AVPlayerItem.Status.readyToPlay
+	}
 	
 	private var canPlay: Bool {
 		if playerItem == nil {
@@ -137,16 +132,17 @@ class BSPlayer: NSObject {
 		return playerItem!.isPlaybackLikelyToKeepUp
 	}
 	
-	init(url: String, delegate: BSPlayerDelegate?, config: BSPlayerConfig = BSPlayerConfig.init()) {
-		self.config = config
+	public init(url: String, delegate: BSPlayerDelegate?, shouldAutoPlay: Bool = true, playbackStartTime: Int = 0) {
 		self.delegate = delegate
 		self.url = url
+		self.shouldAutoPlay = shouldAutoPlay
+		self.playbackStartTime = playbackStartTime
 		super.init()
 		prepareToPlay()
 	}
 	
 	//MARK:-Public
-	func play() {
+	public func play() {
 		guard player != nil && playerItem != nil else {
 			return
 		}
@@ -167,7 +163,7 @@ class BSPlayer: NSObject {
 		state = .playing
 	}
 	
-	func pause() {
+	public func pause() {
 		guard player != nil else {
 			return
 		}
@@ -175,13 +171,13 @@ class BSPlayer: NSObject {
 		state = .paused
 	}
 	
-	func stop() {
+	public func stop() {
 		player?.pause()
 		state = .stoped
 		player?.seek(to: CMTime.zero)
 	}
 	
-	func shutdown() {
+	public func shutdown() {
 		stop()
 		removePlayItemObserver()
 		removePlayerTimeObserver()
@@ -190,8 +186,8 @@ class BSPlayer: NSObject {
 		urlAsset = nil
 	}
 	
-	func seekToTime(seekTime: Int) {
-		if player == nil || state == .seeking || !playerItemReady {
+	public func seekToTime(seekTime: Int) {
+		if player == nil || state == .seeking || playerItem?.status != AVPlayerItem.Status.readyToPlay {
 			return
 		}
 		let cms = CMTimeMakeWithSeconds(Float64(seekTime), preferredTimescale: Int32(NSEC_PER_SEC))
@@ -207,7 +203,7 @@ class BSPlayer: NSObject {
 		})
 	}
 	
-	func seekToProgress(progress: Double) {
+	public func seekToProgress(progress: Double) {
 		guard playerItem != nil else {
 			return
 		}
@@ -215,12 +211,12 @@ class BSPlayer: NSObject {
 		seekToTime(seekTime: time.safeToInt())
 	}
 	
-	func replacePlay(url: String) {
+	public func replacePlay(url: String) {
 		self.url = url
 		prepareToPlay()
 	}
 	
-	func reset() {
+	public func reset() {
 		stop()
 	}
 	
@@ -258,7 +254,8 @@ class BSPlayer: NSObject {
 				return
 			}
 			let currentTime = CMTimeGetSeconds((self?.playerItem!.currentTime())!)
-			self?.delegate?.playerCurrentTimeChanged(player: self!, time: currentTime.safeToInt())
+			self?.delegate?.player(player: self!, currentTimeChanged: currentTime.safeToInt())
+//			self?.delegate?.playerCurrentTimeChanged(player: self!, time: currentTime.safeToInt())
 		})
 	}
 	
@@ -282,7 +279,7 @@ class BSPlayer: NSObject {
 	
 	@objc private func playerItemPlayToEnd() {
 		state = .playToEnd
-		delegate?.playerCurrentTimeChanged(player: self, time: 0)
+		delegate?.player(player: self, currentTimeChanged: 0)
 	}
 	
 	private func removePlayItemObserver() {
@@ -312,26 +309,27 @@ class BSPlayer: NSObject {
 	
 	func uneceptedErrorOccur(error: Error) {
 		PlayerLoger.error(log: "Error: \(error)")
-		delegate?.unexceptedErrorOccur(player: self, error: error)
+		delegate?.player(player: self, unexceptedErrorOccur: error)
 	}
 	
-	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		if keyPath == "status" {
 			let status = (change![NSKeyValueChangeKey.newKey] as! NSNumber).intValue
 			if status == AVPlayerItem.Status.readyToPlay.rawValue {
 				state = .readyToPlay
-				delegate?.playerDurationChanged(player: self, duration: self.duration)
-				loadAssetDidCompleted?(nil)
+				delegate?.player(player: self, durationChanged: self.duration)
+//				delegate?.playerDurationChanged(player: self, duration: self.duration)
+//				loadAssetDidCompleted?(nil)
 				//playerItem加载完成并不代表可以播放了，需要检查下面属性的值
 				if !playerItem!.isPlaybackLikelyToKeepUp {
 					return
 				}
-				if config.shouldAutoPlay {
+				if shouldAutoPlay {
 					player?.play()
 					state = .playing
 				}
-				if seekToPlaybackTime != 0 {
-					seekToTime(seekTime: seekToPlaybackTime)
+				if playbackStartTime != 0 {
+					seekToTime(seekTime: playbackStartTime)
 				}
 			}
 			else if status == AVPlayerItem.Status.failed.rawValue {
@@ -347,7 +345,7 @@ class BSPlayer: NSObject {
 				return
 			}
 			if let bufferDuration = availableBufferDuration() {
-				delegate?.playerBufferChanged(player: self, buffringTime: bufferDuration.safeToInt())
+				delegate?.player(player: self, bufferTimeChanged: bufferDuration.safeToInt())
 			}
 		}
 		else if keyPath == "playbackBufferEmpty" {
@@ -364,12 +362,12 @@ class BSPlayer: NSObject {
 				PlayerLoger.info(log: "isPlaybackLikelyToKeepUp = \(playerItem!.isPlaybackLikelyToKeepUp)")
 				// playerItem加载完成之后，视频并不能立即播放(isPlaybackLikelyToKeepUp == false)
 				// 只有当isPlaybackLikelyToKeepUp == true才可以播放
-				if config.shouldAutoPlay {
+				if shouldAutoPlay {
 					player?.play()
 					state = .playing
 				}
-				if seekToPlaybackTime != 0 {
-					seekToTime(seekTime: seekToPlaybackTime)
+				if playbackStartTime != 0 {
+					seekToTime(seekTime: playbackStartTime)
 				}
 			}
 			// 播放出现卡顿之后，又可以继续播放了

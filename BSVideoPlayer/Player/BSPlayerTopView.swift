@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class BSPlayerTopView: UIView {
+public class BSPlayerTopView: UIView {
 	
 	private var backBtn: VExpandButton
 	
@@ -41,7 +41,7 @@ class BSPlayerTopView: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		if isPortrait {
 			setPortrait()

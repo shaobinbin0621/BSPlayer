@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class BSPlayerStepView: UIView {
+public class BSPlayerStepView: UIView {
 	
 	var value: Float = 0
 	var currentTime: Int = 0 {
@@ -49,7 +49,7 @@ class BSPlayerStepView: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func layoutSubviews() {
+	public override func layoutSubviews() {
 		super.layoutSubviews()
 		var x: CGFloat = 0
 		var y: CGFloat = 8
