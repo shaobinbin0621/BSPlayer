@@ -11,11 +11,8 @@
 		F513D255252420E70003215C /* BSPlayerUntil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F513D254252420E70003215C /* BSPlayerUntil.swift */; };
 		F55DDD6525246112007ADD90 /* BSPlayerStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55DDD6425246112007ADD90 /* BSPlayerStepView.swift */; };
 		F57E57A8253EBB5100687795 /* FramewoekTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F57E579F253EBB5000687795 /* FramewoekTest.framework */; };
-		F57E57AF253EBB5100687795 /* FramewoekTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57E57AE253EBB5100687795 /* FramewoekTestTests.swift */; };
-		F57E57B1253EBB5100687795 /* FramewoekTest.h in Headers */ = {isa = PBXBuildFile; fileRef = F57E57A1253EBB5000687795 /* FramewoekTest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F57E57B4253EBB5100687795 /* FramewoekTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F57E579F253EBB5000687795 /* FramewoekTest.framework */; };
 		F57E57B5253EBB5100687795 /* FramewoekTest.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F57E579F253EBB5000687795 /* FramewoekTest.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F57E57C2253EBB6700687795 /* SomeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57E57C1253EBB6700687795 /* SomeFile.swift */; };
 		F5842A4D251497BE006939DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5842A4C251497BE006939DF /* AppDelegate.swift */; };
 		F5842A4F251497BE006939DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5842A4E251497BE006939DF /* SceneDelegate.swift */; };
 		F5842A51251497BE006939DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5842A50251497BE006939DF /* ViewController.swift */; };
@@ -89,12 +86,7 @@
 		F513D254252420E70003215C /* BSPlayerUntil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPlayerUntil.swift; sourceTree = "<group>"; };
 		F55DDD6425246112007ADD90 /* BSPlayerStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPlayerStepView.swift; sourceTree = "<group>"; };
 		F57E579F253EBB5000687795 /* FramewoekTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FramewoekTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F57E57A1253EBB5000687795 /* FramewoekTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramewoekTest.h; sourceTree = "<group>"; };
-		F57E57A2253EBB5000687795 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F57E57A7253EBB5100687795 /* FramewoekTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FramewoekTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F57E57AE253EBB5100687795 /* FramewoekTestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramewoekTestTests.swift; sourceTree = "<group>"; };
-		F57E57B0253EBB5100687795 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F57E57C1253EBB6700687795 /* SomeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeFile.swift; sourceTree = "<group>"; };
 		F5842A49251497BE006939DF /* BSVideoPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BSVideoPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5842A4C251497BE006939DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5842A4E251497BE006939DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -158,33 +150,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F57E57A0253EBB5000687795 /* FramewoekTest */ = {
-			isa = PBXGroup;
-			children = (
-				F57E57A1253EBB5000687795 /* FramewoekTest.h */,
-				F57E57C1253EBB6700687795 /* SomeFile.swift */,
-				F57E57A2253EBB5000687795 /* Info.plist */,
-			);
-			path = FramewoekTest;
-			sourceTree = "<group>";
-		};
-		F57E57AD253EBB5100687795 /* FramewoekTestTests */ = {
-			isa = PBXGroup;
-			children = (
-				F57E57AE253EBB5100687795 /* FramewoekTestTests.swift */,
-				F57E57B0253EBB5100687795 /* Info.plist */,
-			);
-			path = FramewoekTestTests;
-			sourceTree = "<group>";
-		};
 		F5842A40251497BE006939DF = {
 			isa = PBXGroup;
 			children = (
 				F5842A4B251497BE006939DF /* BSVideoPlayer */,
 				F5842A62251497C1006939DF /* BSVideoPlayerTests */,
 				F5842A6D251497C1006939DF /* BSVideoPlayerUITests */,
-				F57E57A0253EBB5000687795 /* FramewoekTest */,
-				F57E57AD253EBB5100687795 /* FramewoekTestTests */,
 				F5842A4A251497BE006939DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -257,7 +228,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F57E57B1253EBB5100687795 /* FramewoekTest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +424,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F57E57C2253EBB6700687795 /* SomeFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,7 +431,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F57E57AF253EBB5100687795 /* FramewoekTestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,7 +571,6 @@
 		F57E57BB253EBB5100687795 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TH77Q5JE46;
 				INFOPLIST_FILE = FramewoekTestTests/Info.plist;
@@ -623,7 +590,6 @@
 		F57E57BC253EBB5100687795 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TH77Q5JE46;
 				INFOPLIST_FILE = FramewoekTestTests/Info.plist;
@@ -759,7 +725,6 @@
 		F5842A74251497C1006939DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -781,7 +746,6 @@
 		F5842A75251497C1006939DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
