@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "BSPlayer"
   spec.version      = "0.0.1"
-  spec.summary      = "video player."
+  spec.summary      = "A Simply Video Player."
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,10 +25,10 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
-                      this is a simply player.
+                      A Simply Video Player.
                    DESC
 
-  spec.homepage     = "https://github.com/WeiKnowi/BSPlayer.git"
+  spec.homepage     = "https://github.com/WeiKnowi/BSPlayer"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -94,7 +94,7 @@ Pod::Spec.new do |spec|
   #
 
   # spec.source_files  = "Classes", "Classes/**/*.{h,m}"
-  spec.source_files = "BSVideoPlayer/VideoPlayer/**/*.{swift}"
+  spec.source_files = "BSVideoPlayer/Player/**/*.{swift}"
   # spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
@@ -108,7 +108,7 @@ Pod::Spec.new do |spec|
   #  non-essential files like tests, examples and documentation.
   #
 
-  spec.resource  = "BSVideoPlayer/VideoPlayer/BSVideo.xcassets"
+  spec.resource  = "BSVideoPlayer/Player/BSPlayer.xcassets"
   # spec.resources = "Resources/*.png"
 
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
