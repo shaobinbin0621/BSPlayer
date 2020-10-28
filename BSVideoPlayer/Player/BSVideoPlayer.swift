@@ -121,7 +121,7 @@ public class BSVideoPlayer: PlayerView, UIGestureRecognizerDelegate {
 	
 	public private(set) var stepView: BSPlayerStepView
 	
-	public private(set) var player: BSPlayer!
+	public private(set) var player: BSPlayer?
 	
 	public private(set) var statusBar: BSPlayerStatusBar
 	
@@ -168,24 +168,24 @@ public class BSVideoPlayer: PlayerView, UIGestureRecognizerDelegate {
 		backgroundColor = UIColor.black
 		
 		player = BSPlayer.init(url: url, delegate: self)
-		vPlayer = player.player
+		vPlayer = player?.player
 		
 		addSubview(controlBar)
 		controlBar.sliderValueChangedBl = { [unowned self] (value) in
-			self.player(player: self.player, currentTimeChanged: Int(value*Float(self.player.duration)))
+			self.player(player: self.player!, currentTimeChanged: Int(value*Float(self.player!.duration)))
 		}
 		controlBar.sliderTouchBeganBl = { [unowned self] (value) in
-			self.player.pause()
+			self.player?.pause()
 		}
 		controlBar.sliderTouchEndBl = { [unowned self] (value) in
-			self.player.seekToProgress(progress: Double(value))
+			self.player?.seekToProgress(progress: Double(value))
 		}
 		controlBar.playClick = { [unowned self] (isSelected) in
 			if isSelected {
-				self.player.pause()
+				self.player?.pause()
 			}
 			else {
-				self.player.play()
+				self.player?.play()
 			}
 		}
 		controlBar.fullScreenClick = { [unowned self] (isSelected) in
@@ -288,7 +288,7 @@ public class BSVideoPlayer: PlayerView, UIGestureRecognizerDelegate {
 	
 	
 	public func shutdown() {
-		player.shutdown()
+		player?.shutdown()
 	}
 }
 
@@ -315,6 +315,9 @@ extension BSVideoPlayer {
 	@objc private func pan() {
 		if isLockScreen {
 			self.lockBtn.alpha = 1
+			return
+		}
+		guard let player = self.player else {
 			return
 		}
 		if player.state != .playing && player.state != .paused {
@@ -350,6 +353,9 @@ extension BSVideoPlayer {
 	}
 	
 	@objc private func doubleTap() {
+		guard let player = self.player else {
+			return
+		}
 		if isLockScreen {
 			self.lockBtn.alpha = 1
 			return
