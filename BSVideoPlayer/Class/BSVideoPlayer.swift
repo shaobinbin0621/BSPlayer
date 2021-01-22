@@ -488,7 +488,7 @@ extension BSVideoPlayer: BSPlayerDelegate {
 	}
 }
 
-// Rotate
+/// Rotate
 extension BSVideoPlayer {
 	// 旋转至竖屏
 	private func setPortrait() {
@@ -528,10 +528,11 @@ extension BSVideoPlayer {
 			}
 			statusBar.startMonitor()
 		}
-		
 		var rect = CGRect.zero
 		if interfaceOrientation == UIInterfaceOrientation.landscapeLeft || interfaceOrientation == UIInterfaceOrientation.landscapeRight {
-			savePortraitInfo()
+			if UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.portrait {
+				savePortraitInfo()
+			}
 			var x: CGFloat = 0
 			var w: CGFloat = max(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
 			let h: CGFloat = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height)
