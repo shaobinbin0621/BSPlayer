@@ -11,7 +11,7 @@ import UIKit
 
 extension UIView {
 	
-	var height: CGFloat {
+	var s_height: CGFloat {
 		get {
 			return self.frame.size.height
 		}
@@ -22,7 +22,7 @@ extension UIView {
 		}
 	}
 	
-	var width: CGFloat {
+	var s_width: CGFloat {
 		get {
 			return self.frame.size.width
 		}
@@ -33,7 +33,7 @@ extension UIView {
 		}
 	}
 	
-	var left: CGFloat {
+	var s_left: CGFloat {
 		get {
 			return self.frame.origin.x
 		}
@@ -44,7 +44,7 @@ extension UIView {
 		}
 	}
 	
-	var right: CGFloat {
+	var s_right: CGFloat {
 		get {
 			return self.frame.size.width + self.frame.origin.x
 		}
@@ -55,7 +55,7 @@ extension UIView {
 		}
 	}
 	
-	var top: CGFloat {
+	var s_top: CGFloat {
 		get {
 			return self.frame.origin.y
 		}
@@ -66,7 +66,7 @@ extension UIView {
 		}
 	}
 	
-	var bottom: CGFloat {
+	var s_bottom: CGFloat {
 		get {
 			return self.frame.origin.y + frame.size.height
 		}
@@ -77,7 +77,7 @@ extension UIView {
 		}
 	}
 	
-	var centerX: CGFloat {
+	var s_centerX: CGFloat {
 		get {
 			return frame.origin.x + frame.width/2
 		}
@@ -88,7 +88,7 @@ extension UIView {
 		}
 	}
 	
-	var centerY: CGFloat {
+	var s_centerY: CGFloat {
 		get {
 			return frame.origin.y + frame.height/2
 		}
@@ -99,7 +99,7 @@ extension UIView {
 		}
 	}
 	
-	func getOrderInSuperView() -> Int {
+	func s_getOrderInSuperView() -> Int {
 	   var level = 0
 	   for v in superview!.subviews {
 		   if v == self {
@@ -113,7 +113,7 @@ extension UIView {
 }
 
 extension UIView {
-	var viewController: UIViewController? {
+	var s_viewController: UIViewController? {
 		get {
 			var nexRes = self.next
 			while nexRes != nil && !nexRes!.isKind(of: UIViewController.classForCoder()) {
@@ -125,21 +125,21 @@ extension UIView {
 }
 
 extension String {
-	func getTextWidth(fontSize: CGFloat, h: CGFloat) -> CGFloat {
+	func s_getTextWidth(fontSize: CGFloat, h: CGFloat) -> CGFloat {
 		return (self as NSString).boundingRect(with: CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: h), options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: fontSize)], context: nil).size.width
 	}
 	
-	func getTextWidth(font: UIFont, h: CGFloat) -> CGFloat {
+	func s_getTextWidth(font: UIFont, h: CGFloat) -> CGFloat {
 		return (self as NSString).boundingRect(with: CGSize.init(width: CGFloat.greatestFiniteMagnitude, height: h), options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font : font], context: nil).size.width
 	}
 	
-	func getTextHeight(fontSize: CGFloat, w: CGFloat) -> CGFloat {
+	func s_getTextHeight(fontSize: CGFloat, w: CGFloat) -> CGFloat {
 		return (self as NSString).boundingRect(with: CGSize.init(width: w, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: fontSize)], context: nil).size.height
 	}
 }
 
 extension UIImage {
-	func scalingToSize(size: CGSize) -> UIImage {
+	func s_scalingToSize(size: CGSize) -> UIImage {
 		let simage = self
 		var newImage: UIImage?
 		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
@@ -155,7 +155,7 @@ extension UIImage {
 }
 
 extension UIDevice {
-	func isXSeries() -> Bool {
+	func s_isXSeries() -> Bool {
 		if UIApplication.shared.keyWindow == nil {
 			PlayerLoger.info(log: "UIApplication.shared.keyWindow == nil")
 			return false
@@ -165,7 +165,7 @@ extension UIDevice {
 		}
 		return false
 	}
-	func toInterfaceOrientation() -> UIInterfaceOrientation {
+	func s_toInterfaceOrientation() -> UIInterfaceOrientation {
 		switch orientation {
 		case .portrait:
 			return UIInterfaceOrientation.portrait
@@ -183,13 +183,13 @@ extension UIDevice {
 }
 
 extension Date {
-	static func dateStringHHmm() -> String {
+	static func s_dateStringHHmm() -> String {
 		let formatter = DateFormatter()
 		formatter.locale = Locale.init(identifier: "zh_CN")
 		formatter.dateFormat = "HH:mm"
 		return formatter.string(from: Date())
 	}
-	static func millesString() -> String {
+	static func s_millesString() -> String {
 		let formatter = DateFormatter()
 		formatter.locale = Locale.init(identifier: "zh_CN")
 		formatter.dateFormat = "HH:mm:ss.SSS"
@@ -198,7 +198,7 @@ extension Date {
 }
 
 extension Double {
-	func safeToInt() -> Int {
+	func s_safeToInt() -> Int {
 		if isNaN {
 			return 0
 		}

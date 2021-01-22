@@ -12,8 +12,8 @@ public class BSPlayerBattery: UIView {
 	
 	var value: Float = 0 {
 		didSet {
-			let w: CGFloat = width - 3*2 - 1
-			batteryValueView.frame = CGRect.init(origin: batteryValueView.frame.origin, size: CGSize.init(width: w*CGFloat(value), height: batteryValueView.width))
+			let w: CGFloat = s_width - 3*2 - 1
+			batteryValueView.frame = CGRect.init(origin: batteryValueView.frame.origin, size: CGSize.init(width: w*CGFloat(value), height: batteryValueView.s_width))
 		}
 	}
 	
@@ -42,14 +42,14 @@ public class BSPlayerBattery: UIView {
 		super.layoutSubviews()
 		var x: CGFloat = 0
 		var y: CGFloat = 0
-		var w: CGFloat = width
-		var h: CGFloat = height
+		var w: CGFloat = s_width
+		var h: CGFloat = s_height
 		batteryImg.frame = CGRect.init(x: x, y: y, width: w, height: h)
 		
 		x = 3
 		y = 7
-		w = width - x*2 - 1
-		h = height - y*2
+		w = s_width - x*2 - 1
+		h = s_height - y*2
 		batteryValueView.frame = CGRect.init(x: x, y: y, width: w, height: h)
 		
 	}
@@ -142,10 +142,10 @@ public class BSPlayerStatusBar: UIView {
 	
 	public override func layoutSubviews() {
 		super.layoutSubviews()
-		var w: CGFloat = (timeLabel.text?.getTextWidth(font: timeLabel.font, h: 20))! + 5
-		var x: CGFloat = width/2 - w/2
+		var w: CGFloat = (timeLabel.text?.s_getTextWidth(font: timeLabel.font, h: 20))! + 5
+		var x: CGFloat = s_width/2 - w/2
 		var y: CGFloat = 0
-		var h: CGFloat = height
+		var h: CGFloat = s_height
 		timeLabel.frame = CGRect.init(x: x, y: y, width: w, height: h)
 
 //		x = 5
@@ -154,27 +154,27 @@ public class BSPlayerStatusBar: UIView {
 		
 		w = 11
 		h = 11
-		x = width - w - 3
-		y = (height - h)/2
+		x = s_width - w - 3
+		y = (s_height - h)/2
 		rechargeImg.frame = CGRect.init(x: x, y: y, width: w, height: h)
 		
 		w = 25
-		h = height
+		h = s_height
 		y = 0
 		if isCharging {
-			x = width - rechargeImg.width - 1 - 3 - w
+			x = s_width - rechargeImg.s_width - 1 - 3 - w
 		}
 		else {
-			x = width - w - 3
+			x = s_width - w - 3
 		}
 		batteryView.frame = CGRect.init(x: x, y: y, width: w, height: h)
 	}
 	
 	private func startTimer() {
 		invalidateTimer()
-		timeLabel.text = Date.dateStringHHmm()
+		timeLabel.text = Date.s_dateStringHHmm()
 		timer = Timer.v_sheduledTimer(interval: 1, isRepeat: true) { [weak self] in
-			self!.timeLabel.text = Date.dateStringHHmm()
+			self!.timeLabel.text = Date.s_dateStringHHmm()
 		}
 	}
 	

@@ -19,6 +19,10 @@ public protocol BSPlayerDelegate: AnyObject {
 
 public class BSPlayer: NSObject {
 	
+	enum PlayerError: Error {
+		case invalidURL
+	}
+	
 	public private(set) var urlAsset: AVURLAsset!
 	public private(set) var player: AVPlayer!
 	public private(set) var playerItem: AVPlayerItem!
@@ -31,13 +35,13 @@ public class BSPlayer: NSObject {
 	
 	public var duration: Int {
 		get {
-			return CMTimeGetSeconds(playerItem!.duration).safeToInt()
+			return CMTimeGetSeconds(playerItem!.duration).s_safeToInt()
 		}
 	}
 	
 	public var currentTime: Int {
 		get {
-			return CMTimeGetSeconds(player!.currentTime()).safeToInt()
+			return CMTimeGetSeconds(player!.currentTime()).s_safeToInt()
 		}
 	}
 	
@@ -50,6 +54,7 @@ public class BSPlayer: NSObject {
 		}
 	}
 	
+	/// 是否是本地视频
 	public var isLocal: Bool {
 		get {
 			return url.hasPrefix("file://")
@@ -77,9 +82,12 @@ public class BSPlayer: NSObject {
 		}
 	}
 	
+	/// 是否自动播放
 	public private(set) var shouldAutoPlay: Bool
 	
-	// 播放初始的播放时间
+	/// 播放的初始时间
+	///
+	/// 如果这里设置值为2，视频将在2秒处开始播放
 	public private(set) var playbackStartTime = 0
 	
 	public private(set) var url: String!
@@ -87,15 +95,39 @@ public class BSPlayer: NSObject {
 	weak public private(set) var delegate: BSPlayerDelegate?
 	
 	public enum State: Int {
+		
+		// 未知
 		case unknow
+		
+		/// 预备去播放
+		///
+		/// 指的是在刚初始化播放器之后，刚刚添加了asset时的状态，此时还没有去解析视频
 		case prepareToPlay
+		
+		// 缓冲
 		case buffing
+		
+		/// 视频可以播放
+		///
+		/// asset中的视频信息已经解析完成，可以调用player.play()播放视频
 		case readyToPlay
+		
+		// 暂停
 		case paused
+		
+		// 播放
 		case playing
+		
+		// 快进或者快退
 		case seeking
+		
+		// 停止
 		case stoped
+		
+		// 播放结束
 		case playToEnd
+		
+		// 播放出错
 		case failed
 	}
 	
@@ -121,6 +153,7 @@ public class BSPlayer: NSObject {
 		self.shouldAutoPlay = shouldAutoPlay
 		self.playbackStartTime = playbackStartTime
 		super.init()
+		
 		if playUrl == nil {
 			return nil
 		}
@@ -185,7 +218,7 @@ public class BSPlayer: NSObject {
 	
 	public func seekToProgress(progress: Double) {
 		let time = CMTimeGetSeconds(playerItem.duration) * progress
-		seekToTime(seekTime: time.safeToInt())
+		seekToTime(seekTime: time.s_safeToInt())
 	}
 	
 	public func replacePlay(url: String) {
@@ -228,7 +261,7 @@ public class BSPlayer: NSObject {
 				return
 			}
 			let currentTime = CMTimeGetSeconds((self?.playerItem.currentTime())!)
-			self?.delegate?.player(player: self!, currentTimeChanged: currentTime.safeToInt())
+			self?.delegate?.player(player: self!, currentTimeChanged: currentTime.s_safeToInt())
 //			self?.delegate?.playerCurrentTimeChanged(player: self!, time: currentTime.safeToInt())
 		})
 	}
@@ -310,7 +343,7 @@ public class BSPlayer: NSObject {
 				return
 			}
 			if let bufferDuration = availableBufferDuration() {
-				delegate?.player(player: self, bufferTimeChanged: bufferDuration.safeToInt())
+				delegate?.player(player: self, bufferTimeChanged: bufferDuration.s_safeToInt())
 			}
 		}
 		else if keyPath == "playbackBufferEmpty" {

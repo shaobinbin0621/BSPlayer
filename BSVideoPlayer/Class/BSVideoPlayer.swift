@@ -22,22 +22,19 @@ public protocol BSVideoPlayerDelegate: AnyObject {
 
 public struct BSVideoPlayerConfig {
 	
-	public let url: String
-	
-	// 是否自动播放
+	/// 是否自动播放
 	public let shouldAutoPlay: Bool
 	
-	//x系列手机(刘海屏)，在全屏状态下是否全填充屏幕
+	/// x系列手机(刘海屏)，在全屏状态下是否全填充屏幕
 	public let isXSeriesAspectFill: Bool
 	
-	// 非刘海屏手机播放器的frame没有给statusBar预留间隙时，设置该值为true，可以使子view在竖屏时自动向下便宜
+	/// 非刘海屏手机播放器的frame没有给statusBar预留间隙时，设置该值为true，可以使子view在竖屏时自动向下便宜
 	public let isAvoidTheStatusBar: Bool
 	
-	public init(url: String, shouldAutoPlay: Bool = true, isXSeriesAspectFill: Bool = false, isAvoidTheStatusBar: Bool = true) {
-		self.url = url
+	public init(shouldAutoPlay: Bool = true, isXSeriesAspectFill: Bool = false, isAvoidTheStatusBar: Bool = true) {
 		self.shouldAutoPlay = shouldAutoPlay
 		self.isXSeriesAspectFill = isXSeriesAspectFill
-		if UIDevice.current.isXSeries() {
+		if UIDevice.current.s_isXSeries() {
 			self.isAvoidTheStatusBar = false
 		}
 		else {
@@ -151,7 +148,7 @@ public class BSVideoPlayer: PlayerView, UIGestureRecognizerDelegate {
 	
 	private(set) var lastOrientation: UIInterfaceOrientation
 
-	public init(url: String, frame: CGRect, config: BSVideoPlayerConfig) {
+	public init(url: String, frame: CGRect, config: BSVideoPlayerConfig = BSVideoPlayerConfig()) {
 		self.url = url
 		self.config = config
 		controlBar = BSPlayerControlBar.init(frame: CGRect.init(x: 0, y: frame.height - 45, width: frame.width, height: 45))
@@ -275,8 +272,8 @@ public class BSVideoPlayer: PlayerView, UIGestureRecognizerDelegate {
 	
 	public override func layoutSubviews() {
 		super.layoutSubviews()
-		let w = max(width, height)
-		let h = min(width, height)
+		let w = max(s_width, s_height)
+		let h = min(s_width, s_height)
 		controlBar.frame = CGRect.init(x: 0, y: h - (isPortrait ? 45 : 90), width: w, height: isPortrait ? 45 : 90)
 		topView.frame = CGRect.init(x: 0, y: 0, width: w, height: 45)
 		lockBtn.frame = CGRect.init(x: 20, y: h/2 - 15, width: 30, height: 30)
@@ -332,7 +329,7 @@ extension BSVideoPlayer {
 		else if panGes.state == .changed {
 			let currentP = panGes.location(in: self)
 			let x = currentP.x - panStartP.x
-			let panTime = Int((x/width)*3*60)
+			let panTime = Int((x/s_width)*3*60)
 			var seekTime = player.currentTime + panTime < 0 ? 0 : player.currentTime + panTime
 			seekTime = seekTime > player.duration ? player.duration : seekTime
 			stepView.currentTime = seekTime
@@ -342,7 +339,7 @@ extension BSVideoPlayer {
 			stepView.isHidden = true
 			let currentP = panGes.location(in: self)
 			let x = currentP.x - panStartP.x
-			let panTime = Int((x/width)*3*60)
+			let panTime = Int((x/s_width)*3*60)
 			var seekTime = player.currentTime + panTime < 0 ? 0 : player.currentTime + panTime
 			seekTime = seekTime > player.duration ? player.duration : seekTime
 			player.seekToTime(seekTime: seekTime)
@@ -512,7 +509,7 @@ extension BSVideoPlayer {
 	}
 	
 	public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		let interfaceOrientation = UIDevice.current.toInterfaceOrientation()
+		let interfaceOrientation = UIDevice.current.s_toInterfaceOrientation()
 		if lastOrientation == interfaceOrientation {
 			return
 		}
@@ -575,7 +572,7 @@ extension BSVideoPlayer {
 	
 	// 存储属性状态的信息以及一些旋转的前的准备工作
 	private func savePortraitInfo() {
-		self.portraitInfo = PortraitStateInfo.init(level: getOrderInSuperView(), rect: frame,sView: self.superview!)
+		self.portraitInfo = PortraitStateInfo.init(level: s_getOrderInSuperView(), rect: frame,sView: self.superview!)
 		let rect = self.convert(self.frame, to: fullScreenContainerView)
 		removeFromSuperview()
 		fullScreenContainerView.addSubview(self)

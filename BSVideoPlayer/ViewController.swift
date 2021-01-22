@@ -58,14 +58,14 @@ class ViewController: UIViewController, BSVideoPlayerDelegate {
 			y += view.safeAreaInsets.top
 		}
 		navigationController?.setNavigationBarHidden(true, animated: false)
-		y = navigationController!.navigationBar.height + UIApplication.shared.statusBarFrame.height
+		y = navigationController!.navigationBar.s_height + UIApplication.shared.statusBarFrame.height
 		
-		vPlayer = BSVideoPlayer.init(url: url, frame: CGRect.init(x: 0, y: y, width: view.frame.width, height: (9.0/16.0)*view.frame.width), config: BSVideoPlayerConfig.init(url: url))
+		vPlayer = BSVideoPlayer.init(url: url, frame: CGRect.init(x: 0, y: y, width: view.frame.width, height: (9.0/16.0)*view.frame.width))
 		view.addSubview(vPlayer)
 	}
 	
 	@objc func orient() {
-		print("\(Date.millesString()) orient")
+		print("\(Date.s_millesString()) orient")
 	}
 
 	override var prefersStatusBarHidden: Bool {
@@ -113,7 +113,7 @@ class V: UIViewController {
 		if #available(iOS 11.0, *) {
 			y = view.safeAreaInsets.top
 		}
-		vPlayer = BSVideoPlayer.init(url: url, frame: CGRect.init(x: 0, y: y, width: view.frame.width, height: (9.0/16.0)*view.frame.width), config: BSVideoPlayerConfig.init(url: url))
+		vPlayer = BSVideoPlayer.init(url: url, frame: CGRect.init(x: 0, y: y, width: view.frame.width, height: (9.0/16.0)*view.frame.width))
 		view.addSubview(vPlayer)
 		
 		var p = BSPlayer.init(url: "", delegate: nil)

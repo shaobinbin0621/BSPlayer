@@ -52,10 +52,10 @@ public class BSPlayerSpeedView: UIView, UITableViewDelegate, UITableViewDataSour
 		self.isHidden = false
 		UIView.animate(withDuration: 0.15, delay: 0, options: UIView.AnimationOptions.curveEaseOut) {
 			if #available(iOS 11.0, *) {
-				self.transform = CGAffineTransform.init(translationX: -self.width-(UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.landscapeLeft ? UIApplication.shared.keyWindow!.safeAreaInsets.right : UIApplication.shared.keyWindow!.safeAreaInsets.left), y: 0)
+				self.transform = CGAffineTransform.init(translationX: -self.s_width-(UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.landscapeLeft ? UIApplication.shared.keyWindow!.safeAreaInsets.right : UIApplication.shared.keyWindow!.safeAreaInsets.left), y: 0)
 			}
 			else {
-				self.transform = CGAffineTransform.init(translationX: -self.width, y: 0)
+				self.transform = CGAffineTransform.init(translationX: -self.s_width, y: 0)
 			}
 		} completion: { (f) in
 			PlayerLoger.info(log: "\(self.frame)")
@@ -120,8 +120,8 @@ class BSPlayerSpeedCell: UITableViewCell {
 		super.layoutSubviews()
 		let x: CGFloat = 2.5
 		let y: CGFloat = 2.5
-		let w: CGFloat = width - x*2
-		let h: CGFloat = height - y*2
+		let w: CGFloat = s_width - x*2
+		let h: CGFloat = s_height - y*2
 		contentLabel.frame = CGRect.init(x: x, y: y, width: w, height: h)
 	}
 	

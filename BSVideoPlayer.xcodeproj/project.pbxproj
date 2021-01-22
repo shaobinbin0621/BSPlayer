@@ -130,7 +130,7 @@
 		F5842A4B251497BE006939DF /* BSVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				F5842A7C251498E8006939DF /* Player */,
+				F5842A7C251498E8006939DF /* Class */,
 				F5842A4C251497BE006939DF /* AppDelegate.swift */,
 				F5842A4E251497BE006939DF /* SceneDelegate.swift */,
 				F5842A50251497BE006939DF /* ViewController.swift */,
@@ -159,7 +159,7 @@
 			path = BSVideoPlayerUITests;
 			sourceTree = "<group>";
 		};
-		F5842A7C251498E8006939DF /* Player */ = {
+		F5842A7C251498E8006939DF /* Class */ = {
 			isa = PBXGroup;
 			children = (
 				F5842A7D251498FA006939DF /* BSPlayer.swift */,
@@ -173,7 +173,7 @@
 				F5894AF3251DF78B0013CF25 /* BSPlayerExtension.swift */,
 				F5894AF52520299C0013CF25 /* BSPlayer.xcassets */,
 			);
-			path = Player;
+			path = Class;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

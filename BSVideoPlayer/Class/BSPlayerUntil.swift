@@ -21,7 +21,7 @@ var xSeriesEdgeMaxValue: CGFloat {
 public class VExpandButton: UIButton {
 	public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 		let space: CGFloat = 10.0
-		let rect = CGRect.init(x: -space, y: -space, width: width+space*2, height: height+space*2)
+		let rect = CGRect.init(x: -space, y: -space, width: s_width+space*2, height: s_height+space*2)
 		return rect.contains(point)
 	}
 }
@@ -29,7 +29,7 @@ public class VExpandButton: UIButton {
 public class VSlider: UISlider {
 	public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 		let space: CGFloat = 10.0
-		let rect = CGRect.init(x: -space, y: -space, width: width+space*2, height: height+space*2)
+		let rect = CGRect.init(x: -space, y: -space, width: s_width+space*2, height: s_height+space*2)
 		return rect.contains(point)
 	}
 }
@@ -77,7 +77,7 @@ class PlayerLoger {
 		if level.rawValue > 0 {
 			return
 		}
-		print("[\(Date.millesString())] : Info: \(log)")
+		print("[\(Date.s_millesString())] : Info: \(log)")
 	}
 	static func warning(log: String) {
 		#if !DEBUG
@@ -86,7 +86,7 @@ class PlayerLoger {
 		if level.rawValue > 1 {
 			return
 		}
-		print("[\(Date.millesString())] : Warning: \(log)")
+		print("[\(Date.s_millesString())] : Warning: \(log)")
 	}
 	static func error(log: String) {
 		#if !DEBUG
@@ -95,7 +95,7 @@ class PlayerLoger {
 		if level.rawValue > 2 {
 			return
 		}
-		print("[\(Date.millesString())] : Error: \(log)")
+		print("[\(Date.s_millesString())] : Error: \(log)")
 	}
 }
 

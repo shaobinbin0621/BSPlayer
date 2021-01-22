@@ -15,9 +15,9 @@ public class BSPlayerStepView: UIView {
 		didSet {
 			progress.progress = Float(currentTime)/Float(duration)
 			contentLabel.text = currentTime.transToHMS()
-			let w = contentLabel.text!.getTextWidth(fontSize: 28, h: 30) + 3
-			if w + 20 > width {
-				width = w + 20
+			let w = contentLabel.text!.s_getTextWidth(fontSize: 28, h: 30) + 3
+			if w + 20 > s_width {
+				s_width = w + 20
 				layoutIfNeeded()
 			}
 		}
@@ -53,14 +53,14 @@ public class BSPlayerStepView: UIView {
 		super.layoutSubviews()
 		var x: CGFloat = 0
 		var y: CGFloat = 8
-		var w: CGFloat = width
+		var w: CGFloat = s_width
 		var h: CGFloat = 30
 		contentLabel.frame = CGRect.init(x: x, y: y, width: w, height: h)
 		
 		x = 20
 		h = 2
-		w = width - x*2
-		y = contentLabel.top + contentLabel.height + 8
+		w = s_width - x*2
+		y = contentLabel.s_top + contentLabel.s_height + 8
 		progress.frame = CGRect.init(x: x, y: y, width: w, height: h)
 	}
 	

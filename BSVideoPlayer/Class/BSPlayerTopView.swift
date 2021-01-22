@@ -54,7 +54,7 @@ public class BSPlayerTopView: UIView {
 	func setPortrait() {
 		var x: CGFloat = 10
 		var y: CGFloat = 10
-		var w: CGFloat = height - y*2
+		var w: CGFloat = s_height - y*2
 		var h: CGFloat = w
 //		if !UIDevice.current.isXSeries() && isAvoidTheStatusBar {
 //			y = y + UIApplication.shared.statusBarFrame.height
@@ -67,7 +67,7 @@ public class BSPlayerTopView: UIView {
 	func setLandscape() {
 		var x: CGFloat = 10
 		var y: CGFloat = 10
-		var w: CGFloat = height - y*2
+		var w: CGFloat = s_height - y*2
 		var h: CGFloat = w
 		backBtn.frame = CGRect.init(x: x, y: y, width: w, height: h)
 		gradientLayer.opacity = 1
