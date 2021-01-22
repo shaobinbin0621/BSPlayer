@@ -9,7 +9,7 @@
 ## [BSPlayer](https://github.com/WeiKnowi/BSPlayer)
 一个由AVPlayer开发的视频播放器，支持旋转全屏，速度控制，调节播放进度，还可以自己自定义UI。
 <img src="/Preview/portrait.jpeg" height = 812>
-<img src="/Preview/landscape.jpeg" height = 812>
+<img src="/Preview/landscape.jpeg" width = 812>
 <!--
 ![portrait](/Preview/portrait.jpeg)
 ![landscape](/Preview/landscape.jpeg)
