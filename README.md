@@ -8,6 +8,9 @@
 -->
 ## [BSPlayer]()
 一个由AVPlayer开发的视频播放器，支持旋转全屏，速度控制，调节播放进度，还可以自己自定义UI。
+![portrait](/Preview/portrait.jpeg)
+![landscape](/Preview/landscape.jpeg)
+
 ## 使用
 1. 基本使用
 ```
