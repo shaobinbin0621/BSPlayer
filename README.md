@@ -1,12 +1,12 @@
 <!--
  * @Author: your name
  * @Date: 2021-01-22 11:29:05
- * @LastEditTime: 2021-01-22 14:27:05
+ * @LastEditTime: 2021-01-22 14:46:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit◊
  * @FilePath: /shaobin/Blog/BSPlayer.md
 -->
-## [BSPlayer]()
+## [BSPlayer](https://github.com/WeiKnowi/BSPlayer)
 一个由AVPlayer开发的视频播放器，支持旋转全屏，速度控制，调节播放进度，还可以自己自定义UI。
 ## 使用
 1. 基本使用
